@@ -1,0 +1,7 @@
+0 Calm
+1 Sad
+2 Joyful
+3 High Energy
+4 Angry
+5 Romantic
+6 Default
