@@ -1,0 +1,228 @@
+/* General styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #23caca;
+}
+
+/* App container */
+#app {
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.5s ease;
+}
+
+/* Header */
+header h1 {
+    text-align: center;
+    font-size: 24px;
+    margin: 0;
+    color: #333;
+}
+
+/* Prediction display */
+#prediction-container {
+    margin: 20px 0;
+    text-align: center;
+    font-size: 18px;
+    color: #555;
+}
+
+#prediction span {
+    font-weight: bold;
+    color: #007BFF;
+}
+
+button {
+    background: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+
+/* Base styling for all mood backgrounds */
+.mood-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  }
+  .default {
+    background: #23caca;
+    color: #333; 
+    animation: none; /* Disable any animations */
+    transform: none; /* Reset transformations */
+    opacity: 1; /* Ensure full opacity */
+  }
+  
+  /* Calm: Soft sky blue with rhythmic ripples */
+  .calm {
+    background: radial-gradient(circle, #b3e5fc, #81d4fa);
+    animation: calmRipple 4s infinite ease-in-out;
+  }
+  
+  @keyframes calmRipple {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 0.5;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.8;
+    }
+  }
+  
+  /* Sad: Deep indigo with downward-moving raindrops */
+  .sad {
+    background: linear-gradient(#3f51b5, #1a237e);
+  }
+  
+  .sad::after {
+    content: '';
+    position: absolute;
+    width: 5px;
+    height: 20px;
+    background: #90caf9;
+    animation: sadRain 2s infinite linear;
+    top: -10%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  @keyframes sadRain {
+    0% {
+      top: -10%;
+      opacity: 0.8;
+    }
+    100% {
+      top: 110%;
+      opacity: 0;
+    }
+  }
+  
+  /* Joyful: Bright yellow with pulsating sunburst */
+  .joyful {
+    background: radial-gradient(circle, #ffeb3b, #ffc107);
+    animation: joyfulGlow 3s infinite ease-in-out;
+  }
+  
+  @keyframes joyfulGlow {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.8;
+    }
+  }
+  
+  /* High Energy: Alternating between neon green and vibrant orange with effects */
+  .high-energy {
+    background: radial-gradient(circle, #76ff03, #ff5722);
+    animation: highEnergySwitch 4s infinite ease-in-out;
+  }
+  
+  @keyframes highEnergySwitch {
+    0%, 100% {
+      background: radial-gradient(circle, #76ff03, #64dd17);
+    }
+    50% {
+      background: radial-gradient(circle, #ff5722, #ff1744);
+    }
+  }
+  
+  .high-energy::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    animation: highEnergyEffects 1s infinite linear;
+  }
+  
+  @keyframes highEnergyEffects {
+    0%, 100% {
+      background: repeating-linear-gradient(45deg, #ffcc00, #ffcc00 10px, transparent 10px, transparent 20px);
+    }
+    50% {
+      background: repeating-linear-gradient(-45deg, #ff4081, #ff4081 10px, transparent 10px, transparent 20px);
+    }
+  }
+  
+  /* Angry: Intense red with flickering flames */
+  .angry {
+    background: radial-gradient(circle, #ff1744, #b71c1c);
+  }
+  
+  .angry::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    animation: angryFlames 0.5s infinite ease-in-out;
+  }
+  
+  @keyframes angryFlames {
+    0%, 100% {
+      background: radial-gradient(circle, rgba(255, 69, 0, 0.8), rgba(139, 0, 0, 0.6));
+    }
+    50% {
+      background: radial-gradient(circle, rgba(255, 99, 71, 0.8), rgba(139, 0, 0, 0.4));
+    }
+  }
+  
+  /* Romantic: Soft pink with floating hearts */
+  .romantic {
+    background: radial-gradient(circle, #ff80ab, #ff1744);
+  }
+  
+  .romantic::after {
+    content: '❤';
+    position: absolute;
+    font-size: 50px;
+    color: #ffcdd2;
+    animation: romanticHearts 3s infinite ease-in-out;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  @keyframes romanticHearts {
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(-50%, -150%) scale(0.5);
+      opacity: 0;
+    }
+  }
+  

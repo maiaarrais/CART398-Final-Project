@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Gesture Recognition</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        video {
+            border: 2px solid black;
+            width: 640px;
+            height: 480px;
+            transform: scaleX(-1);
+        }
+        canvas {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Live Gesture Recognition</h1>
+    <video id="webcam" autoplay></video>
+    <canvas id="captureCanvas"></canvas>
+    <div id="gesture-prediction">Prediction: </div>
+    <div class="mood-container"></div>
+
+    <script>
+        const video = document.getElementById('webcam');
+        const canvas = document.getElementById('captureCanvas');
+        const predictionDisplay = document.getElementById('gesture-prediction');
+        const serverUrl = "https://34d4-34-173-117-20.ngrok-free.app/predict"; // Replace with your Ngrok URL
+
+        // Start the webcam feed
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((stream) => {
+                video.srcObject = stream;
+            })
+            .catch((err) => {
+                console.error("Error accessing the webcam: ", err);
+            });
+
+
+        // Map gesture codes to specific CSS effects
+        const applyGestureEffect = (prediction) => {
+            document.body.className = ""; // Reset classes
+
+            switch (prediction) {
+                case "0 Calm":
+                    document.body.classList.add("calm");
+                    break;
+                case "1 Sad":
+                    document.body.classList.add("sad");
+                    break;
+                case "2 Joyful":
+                    document.body.classList.add("joyful");
+                    break;
+                case "3 High Energy":
+                    document.body.classList.add("high-energy");
+                    break;
+                case "4 Angry":
+                    document.body.classList.add("angry");
+                    break;  
+                case "5 Romantic":
+                    document.body.classList.add("romantic");
+                    break;
+                case "6 Default":
+                    document.body.classList.add("default");
+                    break;
+            }
+        };
+
+        // Capture and send frames to the server
+        const sendFrame = async () => {
+            const context = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+
+            // Draw the current frame on the canvas
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const frame = canvas.toDataURL('image/jpeg');
+
+            // Convert the frame to a Blob
+            const blob = await fetch(frame).then((res) => res.blob());
+
+            // Send the frame to the server
+            const formData = new FormData();
+            formData.append('frame', blob);
+
+            try {
+                const response = await fetch(serverUrl, {
+                    method: 'POST',
+                    body: formData,
+                });
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const data = await response.json();
+                predictionDisplay.textContent = `Prediction: ${data.prediction}`;
+                // Apply CSS effects based on the prediction
+                applyGestureEffect(data.prediction);
+            } catch (err) {
+                predictionDisplay.textContent = `Error: Unable to fetch prediction`;
+                console.error("Error sending frame to server: ", err);
+            }
+        };
+    
+
+    // Send frames periodically
+    setInterval(sendFrame, 500); // Adjust interval as needed
+    </script>
+</body>
+</html>
+
